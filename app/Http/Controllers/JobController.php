@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Mail;
 class JobController extends Controller
 {
     public function index() {
-        $jobs = Job::with('employer')->latest()->simplePaginate(10);
+        $jobs = Job::with('employer')->latest()->simplePaginate(3);
 
         return view('jobs.index', [
             'jobs' => $jobs
@@ -41,7 +41,7 @@ class JobController extends Controller
             'employer_id' => 1
         ]);
 
-        Mail::to($job->employer->user)->send(
+        Mail::to($job->employer->user)->queue(
             new JobPosted($job)
         );
     
